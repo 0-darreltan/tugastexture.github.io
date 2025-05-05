@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Raytracing Demo (Sphere Intersection - Multi-file)</title>
+    <style>
+        body {
+            margin: 20px;
+            font-family: sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        canvas {
+            border: 1px solid black;
+            background-color: white;
+            display: block;
+            margin: 0 auto;
+        }
+
+        h1,
+        p {
+            text-align: center;
+        }
+    </style>
+    <!-- 1. Include gl-matrix library FIRST -->
+    <!-- Pastikan URL ini valid dan dapat diakses -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/3.4.3/gl-matrix-min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gl-matrix@3.4.3/gl-matrix-min.js"></script>
+    <script>
+        // You can now use glMatrix globally
+        const modelMatrix = glMatrix.mat4.create();
+        glMatrix.mat4.translate(modelMatrix, modelMatrix, [1, 2, 3]);
+    </script>
+</head>
+
+<body>
+
+    <h1>Basic Raytracing: Sphere Intersection</h1>
+    <p>Canvas 500x500. Merah = Ray Hit Sphere, Biru = Ray Miss</p>
+    <canvas id="raytracerCanvas" width="500" height="500"></canvas>
+
+    <!-- 2. Include helper script SECOND -->
+    <script src="helper.js"></script>
+
+    <!-- 3. Include main script LAST -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>
