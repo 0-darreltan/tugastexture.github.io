@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Raytracing Demo (2 Spheres)</title>
+    <title>Interactive Raytracing Demo (Phong Lighting)</title>
     <style>
+        /* ... (CSS sama seperti sebelumnya) ... */
         body {
             margin: 20px;
             font-family: sans-serif;
@@ -14,9 +15,11 @@
         }
 
         #controls {
-            width: 250px;
+            width: 280px;
             padding-right: 20px;
             border-right: 1px solid #ccc;
+            max-height: 95vh;
+            overflow-y: auto;
         }
 
         #canvas-container {
@@ -46,8 +49,9 @@
         }
 
         input[type="number"] {
-            width: 80px;
+            width: 70px;
             padding: 3px;
+            margin-left: 2px;
         }
 
         input[type="color"] {
@@ -56,6 +60,13 @@
             padding: 1px;
             vertical-align: middle;
             margin-left: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        input[type="range"] {
+            width: 120px;
+            vertical-align: middle;
         }
 
         fieldset {
@@ -79,12 +90,17 @@
 
         .vector-input span {
             display: inline-block;
-            width: 20px;
+            width: 15px;
             text-align: center;
+            font-size: 0.9em;
+        }
+
+        .inline-label {
+            display: inline;
+            font-weight: normal;
         }
     </style>
-    <!-- 1. Include gl-matrix library FIRST -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/3.4.3/gl-matrix-min.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/gl-matrix@3.4.3/gl-matrix-min.js"></script>
     <script>
         // You can now use glMatrix globally
@@ -110,9 +126,25 @@
         </fieldset>
 
         <fieldset>
+            <legend>Lighting</legend>
+            <label for="light-x">Light Position:</label>
+            <div class="vector-input">
+                <span>X</span><input type="number" id="light-x" value="-5" step="0.5">
+                <span>Y</span><input type="number" id="light-y" value="5" step="0.5">
+                <span>Z</span><input type="number" id="light-z" value="-10" step="0.5">
+            </div>
+            <label for="light-color">Light Color:</label>
+            <input type="color" id="light-color" value="#ffffff"> <!-- White Light -->
+            <label for="ambient-intensity">Ambient Intensity:</label>
+            <input type="range" id="ambient-intensity" min="0" max="1" step="0.05" value="0.2">
+            <span id="ambient-value">0.2</span>
+        </fieldset>
+
+
+        <fieldset>
             <legend>Background</legend>
             <label for="bg-color">Color:</label>
-            <input type="color" id="bg-color" value="#3296ff"> <!-- Biru Muda -->
+            <input type="color" id="bg-color" value="#101020"> <!-- Dark Blue/Purple -->
         </fieldset>
 
         <fieldset>
@@ -125,6 +157,8 @@
             </div>
             <label for="s1-radius">Radius:</label>
             <input type="number" id="s1-radius" value="0.7" step="0.1" min="0.01">
+            <label for="s1-shininess">Shininess:</label>
+            <input type="number" id="s1-shininess" value="32" step="1" min="1">
             <label for="s1-color">Color:</label>
             <input type="color" id="s1-color" value="#ff3232"> <!-- Merah -->
         </fieldset>
@@ -135,21 +169,23 @@
             <div class="vector-input">
                 <span>X</span><input type="number" id="s2-cx" value="0.5" step="0.1">
                 <span>Y</span><input type="number" id="s2-cy" value="0" step="0.1">
-                <span>Z</span><input type="number" id="s2-cz" value="-0.5" step="0.1"> <!-- Sedikit di belakang S1 -->
+                <span>Z</span><input type="number" id="s2-cz" value="-0.5" step="0.1">
             </div>
             <label for="s2-radius">Radius:</label>
             <input type="number" id="s2-radius" value="0.6" step="0.1" min="0.01">
+            <label for="s2-shininess">Shininess:</label>
+            <input type="number" id="s2-shininess" value="64" step="1" min="1">
             <label for="s2-color">Color:</label>
             <input type="color" id="s2-color" value="#32ff32"> <!-- Hijau -->
         </fieldset>
 
         <button id="renderButton">Render Scene</button>
         <p style="font-size: 0.8em; text-align: left; margin-top: 15px;">Change values and click "Render Scene" to
-            update the canvas.</p>
+            update.</p>
     </div>
 
     <div id="canvas-container">
-        <h1>Interactive Raytracing (2 Spheres)</h1>
+        <h1>Interactive Raytracing (Phong Lighting)</h1>
         <canvas id="raytracerCanvas" width="500" height="500">
             Your browser does not support the HTML canvas tag.
         </canvas>
@@ -161,6 +197,13 @@
 
     <!-- 3. Include main script LAST -->
     <script src="script.js"></script>
+
+    <!-- Script Kecil untuk update label range slider -->
+    <script>
+        document.getElementById('ambient-intensity').addEventListener('input', (e) => {
+            document.getElementById('ambient-value').textContent = parseFloat(e.target.value).toFixed(2);
+        });
+    </script>
 
 </body>
 
