@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Raytracing Demo (2 Spheres)</title>
+    <style>
+        body {
+            margin: 20px;
+            font-family: sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+        }
+
+        #controls {
+            width: 250px;
+            padding-right: 20px;
+            border-right: 1px solid #ccc;
+        }
+
+        #canvas-container {
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        canvas {
+            border: 1px solid black;
+            background-color: white;
+            display: block;
+            margin: 0 auto;
+        }
+
+        h1,
+        h2,
+        p {
+            text-align: center;
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin-top: 8px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        input[type="number"] {
+            width: 80px;
+            padding: 3px;
+        }
+
+        input[type="color"] {
+            width: 50px;
+            height: 25px;
+            padding: 1px;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+
+        fieldset {
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        legend {
+            font-weight: bold;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            font-size: 1.1em;
+            cursor: pointer;
+        }
+
+        .vector-input span {
+            display: inline-block;
+            width: 20px;
+            text-align: center;
+        }
+    </style>
+    <!-- 1. Include gl-matrix library FIRST -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/3.4.3/gl-matrix-min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gl-matrix@3.4.3/gl-matrix-min.js"></script>
+    <script>
+        // You can now use glMatrix globally
+        const modelMatrix = glMatrix.mat4.create();
+        glMatrix.mat4.translate(modelMatrix, modelMatrix, [1, 2, 3]);
+    </script>
+
+</head>
+
+<body>
+
+    <div id="controls">
+        <h2>Configuration</h2>
+
+        <fieldset>
+            <legend>Camera</legend>
+            <label for="cam-x">Origin:</label>
+            <div class="vector-input">
+                <span>X</span><input type="number" id="cam-x" value="0" step="0.1">
+                <span>Y</span><input type="number" id="cam-y" value="0" step="0.1">
+                <span>Z</span><input type="number" id="cam-z" value="-5" step="0.1">
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Background</legend>
+            <label for="bg-color">Color:</label>
+            <input type="color" id="bg-color" value="#3296ff"> <!-- Biru Muda -->
+        </fieldset>
+
+        <fieldset>
+            <legend>Sphere 1</legend>
+            <label for="s1-cx">Center:</label>
+            <div class="vector-input">
+                <span>X</span><input type="number" id="s1-cx" value="-0.5" step="0.1">
+                <span>Y</span><input type="number" id="s1-cy" value="0" step="0.1">
+                <span>Z</span><input type="number" id="s1-cz" value="0" step="0.1">
+            </div>
+            <label for="s1-radius">Radius:</label>
+            <input type="number" id="s1-radius" value="0.7" step="0.1" min="0.01">
+            <label for="s1-color">Color:</label>
+            <input type="color" id="s1-color" value="#ff3232"> <!-- Merah -->
+        </fieldset>
+
+        <fieldset>
+            <legend>Sphere 2</legend>
+            <label for="s2-cx">Center:</label>
+            <div class="vector-input">
+                <span>X</span><input type="number" id="s2-cx" value="0.5" step="0.1">
+                <span>Y</span><input type="number" id="s2-cy" value="0" step="0.1">
+                <span>Z</span><input type="number" id="s2-cz" value="-0.5" step="0.1"> <!-- Sedikit di belakang S1 -->
+            </div>
+            <label for="s2-radius">Radius:</label>
+            <input type="number" id="s2-radius" value="0.6" step="0.1" min="0.01">
+            <label for="s2-color">Color:</label>
+            <input type="color" id="s2-color" value="#32ff32"> <!-- Hijau -->
+        </fieldset>
+
+        <button id="renderButton">Render Scene</button>
+        <p style="font-size: 0.8em; text-align: left; margin-top: 15px;">Change values and click "Render Scene" to
+            update the canvas.</p>
+    </div>
+
+    <div id="canvas-container">
+        <h1>Interactive Raytracing (2 Spheres)</h1>
+        <canvas id="raytracerCanvas" width="500" height="500">
+            Your browser does not support the HTML canvas tag.
+        </canvas>
+        <p id="renderTime" style="margin-top: 10px; font-size: 0.9em;"></p>
+    </div>
+
+    <!-- 2. Include helper script SECOND -->
+    <script src="helper.js"></script>
+
+    <!-- 3. Include main script LAST -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>
